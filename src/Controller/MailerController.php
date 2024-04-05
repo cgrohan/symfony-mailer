@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\ContactDTO;
 use App\Form\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,23 +16,18 @@ class MailerController extends AbstractController
     #[Route('/mailer', name: 'mailer')]
     public function sendEmail(MailerInterface $mailer, Request $request): Response
     {
-        $contactFormDTO = new ContactType();
+        $data = new ContactDTO();
 
-        $form = $this->createForm(ContactType::class, $contactFormDTO);
+        $form = $this->createForm(ContactType::class, $data);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = (new Email())
-                ->from($contactFormDTO->getEmail())
+                ->from($data->email)
                 ->to('you@example.com')
-                //->cc('cc@example.com')
-                //->bcc('bcc@example.com')
-                //->replyTo('fabien@example.com')
-                //->priority(Email::PRIORITY_HIGH)
-                ->subject('Demande de contact')
-                ->text($contactFormDTO->getMessage())
-                ->html('<p>See Twig integration for better HTML integration!</p>');
+                ->html($data->message)
+                ->subject('Demande de contact');
 
             $mailer->send($email);
 
