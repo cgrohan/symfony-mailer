@@ -22,9 +22,9 @@ class ContactType extends AbstractType
             ->add('email', EmailType::class )
             ->add('service', ChoiceType::class, [
                 'choices' => [
-                    'Technique' => 'technique',
-                    'Ressource Humaine' => 'rh',
-                    'Direction' => 'direction'
+                    'Technique' => 'technique@domain.fr',
+                    'Ressource Humaine' => 'rh@domain.fr',
+                    'Direction' => 'direction@domain.fr'
                 ],
                 'placeholder' => 'Choisir une équipe',
             ])
