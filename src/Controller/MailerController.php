@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\DTO\ContactDTO;
 use App\Form\ContactType;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MailerController extends AbstractController
@@ -24,11 +24,15 @@ class MailerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $email = (new Email())
+            $email = (new TemplatedEmail())
                 ->from($data->email)
                 ->to($data->service)
-                ->html($data->message)
-                ->subject('Demande de contact');
+                ->htmlTemplate('mailer/_template_mail.html.twig')
+                ->subject('Demande de contact')
+                ->context([
+                    'data' => $data
+                ])
+                ;
 
             $mailer->send($email);
 
