@@ -23,9 +23,20 @@ class MailerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $service = $data->service;
+
+            if ($service == 'technique') {
+                $service = 'technique@domain.fr';
+            } elseif ($service == 'rh') {
+                $service = 'rh@domain.fr';
+            } else {
+                $service = 'direction@domain.fr';
+            }
+
             $email = (new Email())
                 ->from($data->email)
-                ->to('you@example.com')
+                ->to($service)
                 ->html($data->message)
                 ->subject('Demande de contact');
 

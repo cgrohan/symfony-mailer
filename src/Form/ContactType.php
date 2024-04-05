@@ -22,10 +22,11 @@ class ContactType extends AbstractType
             ->add('email', EmailType::class )
             ->add('service', ChoiceType::class, [
                 'choices' => [
-                    'Technique' => '',
-                    'Ressource Humaine' => '',
-                    'Direction' => ''
-                ]
+                    'Technique' => 'technique',
+                    'Ressource Humaine' => 'rh',
+                    'Direction' => 'direction'
+                ],
+                'placeholder' => 'Choisir une équipe',
             ])
             ->add('message', TextareaType::class)
             ->add('submit', SubmitType::class, [

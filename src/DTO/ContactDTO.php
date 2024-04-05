@@ -29,5 +29,6 @@ class ContactDTO
     public string $message;
 
     #[Assert\NotBlank]
+    #[Assert\Choice(['technique', 'rh', 'direction'])]
     public string $service;
 }
