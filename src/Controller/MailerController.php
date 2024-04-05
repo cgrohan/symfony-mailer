@@ -23,17 +23,19 @@ class MailerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = (new Email())
-            ->from($contactFormDTO->getEmail())
-            ->to('you@example.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Demande de contact')
-            ->text($contactFormDTO->getMessage())
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+                ->from($contactFormDTO->getEmail())
+                ->to('you@example.com')
+                //->cc('cc@example.com')
+                //->bcc('bcc@example.com')
+                //->replyTo('fabien@example.com')
+                //->priority(Email::PRIORITY_HIGH)
+                ->subject('Demande de contact')
+                ->text($contactFormDTO->getMessage())
+                ->html('<p>See Twig integration for better HTML integration!</p>');
 
-        $mailer->send($email);
+            $mailer->send($email);
+
+            return $this->redirectToRoute('mailer');
         }
 
         return $this->render('mailer/index.html.twig', [
