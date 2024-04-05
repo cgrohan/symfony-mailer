@@ -8,6 +8,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -24,21 +25,26 @@ class MailerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $email = (new TemplatedEmail())
+            try {
+                $email = (new TemplatedEmail())
                 ->from($data->email)
                 ->to($data->service)
                 ->htmlTemplate('mailer/_template_mail.html.twig')
-                ->subject('Demande de contact')
                 ->context([
                     'data' => $data
                 ])
+                ->subject('Demande de contact')
                 ;
 
-            $mailer->send($email);
+                $mailer->send($email);
 
-            $this->addFlash('success', 'Nous avons bien reçu votre message.');
+                $this->addFlash('success', 'Nous avons bien reçu votre message.');
+                return $this->redirectToRoute('mailer');
 
-            return $this->redirectToRoute('mailer');
+            } catch (TransportExceptionInterface | \Exception $e) {
+                $this->addFlash('danger', 'Votre mail n\'a pas pu s\'envoyer.');
+                $this->addFlash('warning', $e);
+            }
         }
 
         return $this->render('mailer/index.html.twig', [
