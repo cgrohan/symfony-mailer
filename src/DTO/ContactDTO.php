@@ -27,4 +27,7 @@ class ContactDTO
         maxMessage:'Nos équipes ne sont pas payés pour lire des histoires :D merci de ne pas dépasser {{ limit }} caractères.'
     )]
     public string $message;
+
+    #[Assert\NotBlank]
+    public string $service;
 }

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\DTO\ContactDTO;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -19,6 +20,13 @@ class ContactType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('email', EmailType::class )
+            ->add('service', ChoiceType::class, [
+                'choices' => [
+                    'Technique' => '',
+                    'Ressource Humaine' => '',
+                    'Direction' => ''
+                ]
+            ])
             ->add('message', TextareaType::class)
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer',
