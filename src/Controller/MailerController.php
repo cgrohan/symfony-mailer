@@ -35,6 +35,8 @@ class MailerController extends AbstractController
 
             $mailer->send($email);
 
+            $this->addFlash('success', 'Nous avons bien reçu votre message.');
+
             return $this->redirectToRoute('mailer');
         }
 

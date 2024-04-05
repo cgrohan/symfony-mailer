@@ -6,18 +6,27 @@
 
 {{ form_start(form) }}
     <div class="container">
-        <div class="row">
-            <div class="col">
-                {{ form_row(form.nom) }}
+        <div class="m-3">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.nom) }}
+                </div>
+                <div class="col" id="some-custom-id">
+                    {{ form_row(form.email) }}
+                </div>
             </div>
-            <div class="col" id="some-custom-id">
-                {{ form_row(form.email) }}
+            <div class="row">
+                {{ form_row(form.message) }}
             </div>
+            {{ form_row(form.submit) }}
         </div>
-        <div class="row">
-            {{ form_row(form.message) }}
-        </div>
-        {{ form_row(form.submit) }}
     </div>
 {{ form_end(form) }}
 {% endblock %}
