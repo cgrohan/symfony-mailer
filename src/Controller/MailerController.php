@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Form\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -11,9 +13,19 @@ use Symfony\Component\Routing\Attribute\Route;
 class MailerController extends AbstractController
 {
     #[Route('/mailer', name: 'mailer')]
-    public function sendEmail(MailerInterface $mailer): Response
+    public function sendEmail(MailerInterface $mailer, Request $request): Response
     {
-        $email = (new Email())
+        $contactFormDTO = new ContactType();
+
+        $form = $this->createForm(ContactType::class, $contactFormDTO);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($contactFormDTO->getName());
+        }
+
+        /*$email = (new Email())
             ->from('hello@example.com')
             ->to('you@example.com')
             //->cc('cc@example.com')
@@ -24,10 +36,10 @@ class MailerController extends AbstractController
             ->text('Sending emails is fun again!')
             ->html('<p>See Twig integration for better HTML integration!</p>');
 
-        $mailer->send($email);
+        $mailer->send($email);*/
 
         return $this->render('mailer/index.html.twig', [
-            'controller_name' => 'MailerController',
+            'form' => $form,
         ]);
     }
 }
