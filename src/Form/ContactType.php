@@ -15,8 +15,11 @@ class ContactType extends AbstractType
 {
     #[Assert\NotBlank]
     public string $nom;
+
     #[Assert\NotBlank]
+    #[Assert\Email]
     public string $email;
+
     #[Assert\NotBlank]
     public string $message;
 
